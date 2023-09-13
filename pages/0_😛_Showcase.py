@@ -104,12 +104,14 @@ def style_function0(feature):
 def app():
     st.title("Restorative Bangkok City")
     map_border = folium.Map(location=[13.72930616838845, 100.57522025302703], tiles="Cartodbdark_matter", zoom_start=11)
+    map_border2 = folium.Map(location=[13.72930616838845, 100.57522025302703], tiles="Cartodbdark_matter", zoom_start=11)
     m2 = folium.Map(location=[13.72930616838845, 100.57522025302703], tiles="Cartodbdark_matter", zoom_start=11) # "Stamen Toner"
     row1_col0, row1_col1, row1_col2 = st.columns([3, 3, 1])
     width = 950
     height = 600
 
     with row1_col0:
+                st.markdown('**Current City**')
         # with st.expander("See source code"):
                 # with st.echo():
                 folium.GeoJson(
@@ -130,19 +132,19 @@ def app():
                         fill_color='#fa7202',
                         fill_opacity=0.3,
                         parse_html=False
-                    ).add_to(map_border)
+                    ).add_to(map_border2)
 
-                # =========== HEALTHCARE ===========
-                for lat, lng, name in zip(health['lat'].astype(float), health['lng'].astype(float), health['name']):
-                    folium.Circle([lat, lng],
-                                radius=2500, # 5000 meters
-                                color= None, #'#f100f5',
-                                fill=True,
-                                popup=folium.Popup(name, max_width="100"),
-                                fill_color='#f100f5',
-                                fill_opacity=0.5
-                                ).add_to(map_border)
-                st_folium(map_border, width=-1400, height= 800, returned_objects=[])
+                # # =========== HEALTHCARE ===========
+                # for lat, lng, name in zip(health['lat'].astype(float), health['lng'].astype(float), health['name']):
+                #     folium.Circle([lat, lng],
+                #                 radius=2500, # 5000 meters
+                #                 color= None, #'#f100f5',
+                #                 fill=True,
+                #                 popup=folium.Popup(name, max_width="100"),
+                #                 fill_color='#f100f5',
+                #                 fill_opacity=0.5
+                #                 ).add_to(map_border)
+                st_folium(map_border2, width=-1400, height= 800, returned_objects=[])
 
 
     with row1_col2:
@@ -157,7 +159,7 @@ def app():
         # )
         backend2 = st.multiselect(
             'Select dataset',
-            ["Metro Train Station", "Healthcare", "Market","Department Store", "Fire Station", "Police Station" , "Community"],
+            ["Metro Train Station", "Healthcare", "Market","Department Store", "Fire Station", "Police Station" , "Residential"],
             ['Metro Train Station'])
 
         st.markdown(
@@ -237,6 +239,8 @@ def app():
 
     # print(backend + backend2)
     with row1_col1:
+                
+            st.markdown('**Recommended City**')
 
             if len(backend2) == 1:
                 # with st.expander("See source code"):
