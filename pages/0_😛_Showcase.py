@@ -33,11 +33,11 @@ st.sidebar.info(
 # )
 
 # data = pd.read_csv('..//police.csv')
-# data = pd.read_csv('..//data_pOng//data_new//csv//police_station.csv')
+# data = pd.read_csv('.//data//data_showcase//police_station.csv')
 # data.rename(columns={data.columns[0]: "name"},inplace = True)
 
 # =========== RESIDENTIAL ===========
-res = pd.read_csv("..//..//..//ETC//Bestimate//DATA Download from Bestimate//Residential Project Data_opendata_project.csv",sep=',')
+res = pd.read_csv("..//data//data_showcase//Residential Project Data_opendata_project.csv",sep=',')
 res = res[res['province_name_en'] == 'Bangkok']
 # data = pd.read_csv("police.csv",sep=',')
 res = res[['name_th','longitude','latitude']]
@@ -46,27 +46,27 @@ res = res.dropna()
 res = res.sample(500)
 
 # =========== HEALTHCARE ===========
-health = pd.read_csv('..//data_pOng//data_new//csv//hospital.csv')
+health = pd.read_csv('..//data//data_showcase//hospital.csv')
 health.rename(columns={health.columns[0]: "name"},inplace = True)
 
 # =========== MARKET ===========
-market = pd.read_csv('..//data_pOng//data_new//csv//market.csv')
+market = pd.read_csv('..//data//data_showcase//market.csv')
 market.rename(columns={market.columns[0]: "name"},inplace = True)
 
 # =========== DEPARTMENT STORE ===========
-dep_sto = pd.read_csv('..//data_pOng//data_new//csv//department.csv')
+dep_sto = pd.read_csv('..//data//data_showcase//department.csv')
 dep_sto.rename(columns={dep_sto.columns[0]: "name"},inplace = True)
 
 # =========== RESIDENTIAL ===========
-fire = pd.read_csv('..//data_pOng//data_new//csv//fire_station.csv')
+fire = pd.read_csv('..//data//data_showcase//fire_station.csv')
 fire.rename(columns={fire.columns[0]: "name"},inplace = True)
 
 # =========== METRO STATION ===========
-metro = pd.read_csv('..//data_pOng//data_new//csv//mrt.csv')
+metro = pd.read_csv('..//data//data_showcase//mrt.csv')
 metro.rename(columns={metro.columns[0]: "name"},inplace = True)
 
 # =========== POLICESTATION ===========
-police = pd.read_csv('..//data_pOng//data_new//csv//police_station.csv')
+police = pd.read_csv('..//data//data_showcase//police_station.csv')
 police.rename(columns={police.columns[0]: "name"},inplace = True)
 
 # =========== RESIDENTIAL ===========
@@ -76,7 +76,7 @@ police.rename(columns={police.columns[0]: "name"},inplace = True)
 
 
 
-districts = gpd.read_file('..//..//district.json', encoding='utf-8')
+districts = gpd.read_file('..//data//data_showcase//district.json', encoding='utf-8')
 districts['population'] = districts['num_male'] + districts['num_female']
 min_population = districts['population'].min()
 max_population = districts['population'].max()
@@ -102,7 +102,6 @@ def style_function0(feature):
     }
 
 def app():
-
     st.title("Restorative Bangkok City")
     map_border = folium.Map(location=[13.72930616838845, 100.57522025302703], tiles="Cartodbdark_matter", zoom_start=11)
     m2 = folium.Map(location=[13.72930616838845, 100.57522025302703], tiles="Cartodbdark_matter", zoom_start=11) # "Stamen Toner"
