@@ -1,0 +1,1302 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_4f20cf6cedceffaa2a7d6a4bc157cf9c {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+            </style>
+        
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.fullscreen/1.4.2/Control.FullScreen.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.fullscreen/1.4.2/Control.FullScreen.min.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.2/leaflet.draw.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.2/leaflet.draw.css"/>
+    <script src="https://cdn.jsdelivr.net/gh/ljagis/leaflet-measure@2.1.7/dist/leaflet-measure.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/ljagis/leaflet-measure@2.1.7/dist/leaflet-measure.min.css"/>
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css"/>
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_4f20cf6cedceffaa2a7d6a4bc157cf9c" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_4f20cf6cedceffaa2a7d6a4bc157cf9c = L.map(
+                "map_4f20cf6cedceffaa2a7d6a4bc157cf9c",
+                {
+                    center: [13.755584999365633, 100.5039975421898],
+                    crs: L.CRS.EPSG3857,
+                    zoom: 1,
+                    zoomControl: true,
+                    preferCanvas: false,
+                    drawExport: false,
+                    layersControl: true,
+                }
+            );
+            L.control.scale().addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+
+            
+
+        
+    
+            var tile_layer_ec9a38d7f75595bd1a3590be3fefca86 = L.tileLayer(
+                "https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}.png",
+                {"attribution": "Map tiles by \u003ca href=\"http://stamen.com\"\u003eStamen Design\u003c/a\u003e, under \u003ca href=\"http://creativecommons.org/licenses/by/3.0\"\u003eCC BY 3.0\u003c/a\u003e. Data by \u0026copy; \u003ca href=\"http://openstreetmap.org\"\u003eOpenStreetMap\u003c/a\u003e, under \u003ca href=\"http://www.openstreetmap.org/copyright\"\u003eODbL\u003c/a\u003e.", "detectRetina": false, "maxNativeZoom": 24, "maxZoom": 24, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            ).addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+        
+    
+            L.control.fullscreen(
+                {"forceSeparateButton": false, "position": "topleft", "title": "Full Screen", "titleCancel": "Exit Full Screen"}
+            ).addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+        
+    
+            var options = {
+              position: "topleft",
+              draw: {},
+              edit: {},
+            }
+            // FeatureGroup is to store editable layers.
+            var drawnItems = new L.featureGroup().addTo(
+                map_4f20cf6cedceffaa2a7d6a4bc157cf9c
+            );
+            options.edit.featureGroup = drawnItems;
+            var draw_control_5fc49873af8a929f704176fcac46d558 = new L.Control.Draw(
+                options
+            ).addTo( map_4f20cf6cedceffaa2a7d6a4bc157cf9c );
+            map_4f20cf6cedceffaa2a7d6a4bc157cf9c.on(L.Draw.Event.CREATED, function(e) {
+                var layer = e.layer,
+                    type = e.layerType;
+                var coords = JSON.stringify(layer.toGeoJSON());
+                layer.on('click', function() {
+                    alert(coords);
+                    console.log(coords);
+                });
+                drawnItems.addLayer(layer);
+             });
+            map_4f20cf6cedceffaa2a7d6a4bc157cf9c.on('draw:created', function(e) {
+                drawnItems.addLayer(e.layer);
+            });
+            
+        
+    
+            var measure_control_1e305e1e7daa3829a7c4ca42764712ac = new L.Control.Measure(
+                {"position": "bottomleft", "primaryAreaUnit": "sqmeters", "primaryLengthUnit": "meters", "secondaryAreaUnit": "acres", "secondaryLengthUnit": "miles"});
+            map_4f20cf6cedceffaa2a7d6a4bc157cf9c.addControl(measure_control_1e305e1e7daa3829a7c4ca42764712ac);
+
+        
+    
+            L.Control.geocoder(
+                {"collapsed": true, "defaultMarkGeocode": true, "position": "topleft"}
+            ).on('markgeocode', function(e) {
+                map_4f20cf6cedceffaa2a7d6a4bc157cf9c.setView(e.geocode.center, 11);
+            }).addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+
+        
+    
+            map_4f20cf6cedceffaa2a7d6a4bc157cf9c.fitBounds(
+                [[13.755584999365633, 100.5039975421898], [13.755584999365633, 100.5039975421898]],
+                {"maxZoom": 1}
+            );
+        
+    
+            var circle_marker_9358950ea595f093de252991b694ac3e = L.circleMarker(
+                [13.7517628, 100.5036975],
+                {"bubblingMouseEvents": true, "color": "#fa7202", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fa7202", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+        
+    
+        var popup_2ad12348a25f76f7ce62c8e73cf48b74 = L.popup({"maxWidth": "100"});
+
+        
+            
+                var html_7da79dcaf4b6659e6b2bcc2cdd7199b4 = $(`<div id="html_7da79dcaf4b6659e6b2bcc2cdd7199b4" style="width: 100.0%; height: 100.0%;">สถานีตำรวจนครบาลสำราญราษฎร์</div>`)[0];
+                popup_2ad12348a25f76f7ce62c8e73cf48b74.setContent(html_7da79dcaf4b6659e6b2bcc2cdd7199b4);
+            
+        
+
+        circle_marker_9358950ea595f093de252991b694ac3e.bindPopup(popup_2ad12348a25f76f7ce62c8e73cf48b74)
+        ;
+
+        
+    
+    
+            var circle_marker_a0b8a66ef248e7e3e00c3d901f80b45d = L.circleMarker(
+                [13.8421703, 100.546917],
+                {"bubblingMouseEvents": true, "color": "#fa7202", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fa7202", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+        
+    
+        var popup_63e535a5f9059d0d5b3c45a6607cc796 = L.popup({"maxWidth": "100"});
+
+        
+            
+                var html_01012753c5c13f2fdaa56a9fd4773305 = $(`<div id="html_01012753c5c13f2fdaa56a9fd4773305" style="width: 100.0%; height: 100.0%;">Prachachuen Police Station</div>`)[0];
+                popup_63e535a5f9059d0d5b3c45a6607cc796.setContent(html_01012753c5c13f2fdaa56a9fd4773305);
+            
+        
+
+        circle_marker_a0b8a66ef248e7e3e00c3d901f80b45d.bindPopup(popup_63e535a5f9059d0d5b3c45a6607cc796)
+        ;
+
+        
+    
+    
+            var circle_marker_f2de13a6709e2ced84db5fc9005a525c = L.circleMarker(
+                [13.7901787, 100.5738972],
+                {"bubblingMouseEvents": true, "color": "#fa7202", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fa7202", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+        
+    
+        var popup_dda39421bb99bf30cb81b3c1ab863a99 = L.popup({"maxWidth": "100"});
+
+        
+            
+                var html_28ade4c14dbc8d29f4dcdf4cc51c4aaf = $(`<div id="html_28ade4c14dbc8d29f4dcdf4cc51c4aaf" style="width: 100.0%; height: 100.0%;">สถานีตำรวจนครบาลสุทธิสาร</div>`)[0];
+                popup_dda39421bb99bf30cb81b3c1ab863a99.setContent(html_28ade4c14dbc8d29f4dcdf4cc51c4aaf);
+            
+        
+
+        circle_marker_f2de13a6709e2ced84db5fc9005a525c.bindPopup(popup_dda39421bb99bf30cb81b3c1ab863a99)
+        ;
+
+        
+    
+    
+            var circle_marker_ad71a84d9bca728eb1137813440d4f01 = L.circleMarker(
+                [13.7439967, 100.5341624],
+                {"bubblingMouseEvents": true, "color": "#fa7202", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fa7202", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+        
+    
+        var popup_9999f5691a2ad3156f1b36f8d81e74d4 = L.popup({"maxWidth": "100"});
+
+        
+            
+                var html_49f6ab46dd1fc6da0ba06fcd07527b34 = $(`<div id="html_49f6ab46dd1fc6da0ba06fcd07527b34" style="width: 100.0%; height: 100.0%;">Police Support Unit สน.ย่อยจตุรัส</div>`)[0];
+                popup_9999f5691a2ad3156f1b36f8d81e74d4.setContent(html_49f6ab46dd1fc6da0ba06fcd07527b34);
+            
+        
+
+        circle_marker_ad71a84d9bca728eb1137813440d4f01.bindPopup(popup_9999f5691a2ad3156f1b36f8d81e74d4)
+        ;
+
+        
+    
+    
+            var circle_marker_29c4f396dc76845d1710c3c1533495c4 = L.circleMarker(
+                [13.7867789, 100.5473789],
+                {"bubblingMouseEvents": true, "color": "#fa7202", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fa7202", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+        
+    
+        var popup_511d7629b1f182d08ebcdc070053b0bb = L.popup({"maxWidth": "100"});
+
+        
+            
+                var html_a3d65c997d56bc6538c986aebad7f3cf = $(`<div id="html_a3d65c997d56bc6538c986aebad7f3cf" style="width: 100.0%; height: 100.0%;">Bangsue Police Station</div>`)[0];
+                popup_511d7629b1f182d08ebcdc070053b0bb.setContent(html_a3d65c997d56bc6538c986aebad7f3cf);
+            
+        
+
+        circle_marker_29c4f396dc76845d1710c3c1533495c4.bindPopup(popup_511d7629b1f182d08ebcdc070053b0bb)
+        ;
+
+        
+    
+    
+            var circle_marker_b12d00775ea0f6a909a02b8be560fdf7 = L.circleMarker(
+                [13.7406514, 100.6172884],
+                {"bubblingMouseEvents": true, "color": "#fa7202", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fa7202", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+        
+    
+        var popup_9967c3e0e0dfacfc4aa13fc70d28bea1 = L.popup({"maxWidth": "100"});
+
+        
+            
+                var html_6c5943ccbbfc0f0c1d2bd77556db1445 = $(`<div id="html_6c5943ccbbfc0f0c1d2bd77556db1445" style="width: 100.0%; height: 100.0%;">สน.คลองตัน</div>`)[0];
+                popup_9967c3e0e0dfacfc4aa13fc70d28bea1.setContent(html_6c5943ccbbfc0f0c1d2bd77556db1445);
+            
+        
+
+        circle_marker_b12d00775ea0f6a909a02b8be560fdf7.bindPopup(popup_9967c3e0e0dfacfc4aa13fc70d28bea1)
+        ;
+
+        
+    
+    
+            var circle_marker_5bba7473294117bf8abeba1fd4c9fa8d = L.circleMarker(
+                [13.9056089, 100.7484726],
+                {"bubblingMouseEvents": true, "color": "#fa7202", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fa7202", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+        
+    
+        var popup_663210781555d98077e3d2ba3136addb = L.popup({"maxWidth": "100"});
+
+        
+            
+                var html_f454f4f6921dac790c0d316de947b9e8 = $(`<div id="html_f454f4f6921dac790c0d316de947b9e8" style="width: 100.0%; height: 100.0%;">สถานีตำรวจนครบาลนิมิตใหม่</div>`)[0];
+                popup_663210781555d98077e3d2ba3136addb.setContent(html_f454f4f6921dac790c0d316de947b9e8);
+            
+        
+
+        circle_marker_5bba7473294117bf8abeba1fd4c9fa8d.bindPopup(popup_663210781555d98077e3d2ba3136addb)
+        ;
+
+        
+    
+    
+            var circle_marker_4505a231a1012e310bcab09526910581 = L.circleMarker(
+                [13.8154713, 100.7349252],
+                {"bubblingMouseEvents": true, "color": "#fa7202", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fa7202", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+        
+    
+        var popup_b41a20585499718095b6876cb3a16f65 = L.popup({"maxWidth": "100"});
+
+        
+            
+                var html_b5e719081c7aeb9ee354b7201920f383 = $(`<div id="html_b5e719081c7aeb9ee354b7201920f383" style="width: 100.0%; height: 100.0%;">สถานีตำรวจนครบาลมีนบุรี</div>`)[0];
+                popup_b41a20585499718095b6876cb3a16f65.setContent(html_b5e719081c7aeb9ee354b7201920f383);
+            
+        
+
+        circle_marker_4505a231a1012e310bcab09526910581.bindPopup(popup_b41a20585499718095b6876cb3a16f65)
+        ;
+
+        
+    
+    
+            var circle_marker_de52892c8ff83d7e6e7546fdf2e0016c = L.circleMarker(
+                [13.742169, 100.5254325],
+                {"bubblingMouseEvents": true, "color": "#fa7202", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fa7202", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+        
+    
+        var popup_bfd8ec6dbb297d972e82248fc4f12c8c = L.popup({"maxWidth": "100"});
+
+        
+            
+                var html_149e12528697e8b4bd00943247a49971 = $(`<div id="html_149e12528697e8b4bd00943247a49971" style="width: 100.0%; height: 100.0%;">สถานีตำรวจนครบาลปทุมวัน</div>`)[0];
+                popup_bfd8ec6dbb297d972e82248fc4f12c8c.setContent(html_149e12528697e8b4bd00943247a49971);
+            
+        
+
+        circle_marker_de52892c8ff83d7e6e7546fdf2e0016c.bindPopup(popup_bfd8ec6dbb297d972e82248fc4f12c8c)
+        ;
+
+        
+    
+    
+            var circle_marker_715e837520c4c368353026d2108459b9 = L.circleMarker(
+                [13.7445577, 100.5284292],
+                {"bubblingMouseEvents": true, "color": "#fa7202", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fa7202", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+        
+    
+        var popup_336b5d10f6691648b3b0e0b7585e5a64 = L.popup({"maxWidth": "100"});
+
+        
+            
+                var html_68a3b54770b5f243ee32abf0ff8ac290 = $(`<div id="html_68a3b54770b5f243ee32abf0ff8ac290" style="width: 100.0%; height: 100.0%;">Tourist Police</div>`)[0];
+                popup_336b5d10f6691648b3b0e0b7585e5a64.setContent(html_68a3b54770b5f243ee32abf0ff8ac290);
+            
+        
+
+        circle_marker_715e837520c4c368353026d2108459b9.bindPopup(popup_336b5d10f6691648b3b0e0b7585e5a64)
+        ;
+
+        
+    
+    
+            var circle_marker_907f46603d600f7a9f8ebc14ad820b4a = L.circleMarker(
+                [13.7428942, 100.5504357],
+                {"bubblingMouseEvents": true, "color": "#fa7202", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fa7202", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+        
+    
+        var popup_92ba949dc9cd60c334c1693abf7f83c6 = L.popup({"maxWidth": "100"});
+
+        
+            
+                var html_86ec1fabf9316b30c3e58d8522ed45c1 = $(`<div id="html_86ec1fabf9316b30c3e58d8522ed45c1" style="width: 100.0%; height: 100.0%;">จุดร่วม​ปฎิบัติ​แก้​ไขปัญหา​การจราจร​ถนนสายหลัก​ สน.ลุมพินี</div>`)[0];
+                popup_92ba949dc9cd60c334c1693abf7f83c6.setContent(html_86ec1fabf9316b30c3e58d8522ed45c1);
+            
+        
+
+        circle_marker_907f46603d600f7a9f8ebc14ad820b4a.bindPopup(popup_92ba949dc9cd60c334c1693abf7f83c6)
+        ;
+
+        
+    
+    
+            var circle_marker_5337b2d1682d8ff68f0fa721b7073e88 = L.circleMarker(
+                [13.8543937, 100.8073682],
+                {"bubblingMouseEvents": true, "color": "#fa7202", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fa7202", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+        
+    
+        var popup_710c261a0462169afc50dcc11db1e142 = L.popup({"maxWidth": "100"});
+
+        
+            
+                var html_7cde538e947b5b9545dd4c10633ff8b2 = $(`<div id="html_7cde538e947b5b9545dd4c10633ff8b2" style="width: 100.0%; height: 100.0%;">Check point</div>`)[0];
+                popup_710c261a0462169afc50dcc11db1e142.setContent(html_7cde538e947b5b9545dd4c10633ff8b2);
+            
+        
+
+        circle_marker_5337b2d1682d8ff68f0fa721b7073e88.bindPopup(popup_710c261a0462169afc50dcc11db1e142)
+        ;
+
+        
+    
+    
+            var circle_marker_5d10951aea3aa102c71b1915670b57da = L.circleMarker(
+                [13.7321507, 100.650053],
+                {"bubblingMouseEvents": true, "color": "#fa7202", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fa7202", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+        
+    
+        var popup_f765279b0fbc8d28c48a68b329add6eb = L.popup({"maxWidth": "100"});
+
+        
+            
+                var html_5abe8d8fe64fc561ec3061576fa87101 = $(`<div id="html_5abe8d8fe64fc561ec3061576fa87101" style="width: 100.0%; height: 100.0%;">สน. ประเวศ</div>`)[0];
+                popup_f765279b0fbc8d28c48a68b329add6eb.setContent(html_5abe8d8fe64fc561ec3061576fa87101);
+            
+        
+
+        circle_marker_5d10951aea3aa102c71b1915670b57da.bindPopup(popup_f765279b0fbc8d28c48a68b329add6eb)
+        ;
+
+        
+    
+    
+            var circle_marker_06d2eef2745ce83465f2526986676f51 = L.circleMarker(
+                [13.894018, 100.82455],
+                {"bubblingMouseEvents": true, "color": "#fa7202", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fa7202", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+        
+    
+        var popup_0beaad5c2ccc1cc21ff1fd22d02a7f96 = L.popup({"maxWidth": "100"});
+
+        
+            
+                var html_63c9cb3d572dd53c7baab89e8ba8c576 = $(`<div id="html_63c9cb3d572dd53c7baab89e8ba8c576" style="width: 100.0%; height: 100.0%;">สน.ลำหิน</div>`)[0];
+                popup_0beaad5c2ccc1cc21ff1fd22d02a7f96.setContent(html_63c9cb3d572dd53c7baab89e8ba8c576);
+            
+        
+
+        circle_marker_06d2eef2745ce83465f2526986676f51.bindPopup(popup_0beaad5c2ccc1cc21ff1fd22d02a7f96)
+        ;
+
+        
+    
+    
+            var circle_marker_d52a390a10490297226d33824ded9c44 = L.circleMarker(
+                [13.7773777, 100.5207845],
+                {"bubblingMouseEvents": true, "color": "#fa7202", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fa7202", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+        
+    
+        var popup_3c2aa6bffa7ca3a42a82f315d741824d = L.popup({"maxWidth": "100"});
+
+        
+            
+                var html_3da012c3a0d7d146876d51f620de4d55 = $(`<div id="html_3da012c3a0d7d146876d51f620de4d55" style="width: 100.0%; height: 100.0%;">สถานีตำรวจดุสิต</div>`)[0];
+                popup_3c2aa6bffa7ca3a42a82f315d741824d.setContent(html_3da012c3a0d7d146876d51f620de4d55);
+            
+        
+
+        circle_marker_d52a390a10490297226d33824ded9c44.bindPopup(popup_3c2aa6bffa7ca3a42a82f315d741824d)
+        ;
+
+        
+    
+    
+            var circle_marker_750d88fed62d1450af9fc4dee81ffe49 = L.circleMarker(
+                [13.7216629, 100.7764273],
+                {"bubblingMouseEvents": true, "color": "#fa7202", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fa7202", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+        
+    
+        var popup_16567577f652ba14a8f4571b86324cbf = L.popup({"maxWidth": "100"});
+
+        
+            
+                var html_0dfc7a99fb2d6fecd3d681ddd68b2c5a = $(`<div id="html_0dfc7a99fb2d6fecd3d681ddd68b2c5a" style="width: 100.0%; height: 100.0%;">Suvarnabhumi Airport Junction Police Box</div>`)[0];
+                popup_16567577f652ba14a8f4571b86324cbf.setContent(html_0dfc7a99fb2d6fecd3d681ddd68b2c5a);
+            
+        
+
+        circle_marker_750d88fed62d1450af9fc4dee81ffe49.bindPopup(popup_16567577f652ba14a8f4571b86324cbf)
+        ;
+
+        
+    
+    
+            var circle_marker_3b0e99be888bf477e5415d6a1ff4391f = L.circleMarker(
+                [13.7244404, 100.6980625],
+                {"bubblingMouseEvents": true, "color": "#fa7202", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fa7202", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+        
+    
+        var popup_5603d68a1883ef06e9da9d1d1487a767 = L.popup({"maxWidth": "100"});
+
+        
+            
+                var html_79094a92402785554b9320e2196a8baa = $(`<div id="html_79094a92402785554b9320e2196a8baa" style="width: 100.0%; height: 100.0%;">Prawet Police Station</div>`)[0];
+                popup_5603d68a1883ef06e9da9d1d1487a767.setContent(html_79094a92402785554b9320e2196a8baa);
+            
+        
+
+        circle_marker_3b0e99be888bf477e5415d6a1ff4391f.bindPopup(popup_5603d68a1883ef06e9da9d1d1487a767)
+        ;
+
+        
+    
+    
+            var circle_marker_6bc6c53703caa7394f78b3988663ce89 = L.circleMarker(
+                [13.6767886, 100.5003018],
+                {"bubblingMouseEvents": true, "color": "#fa7202", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fa7202", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+        
+    
+        var popup_3596a8d81973d2f09bb296654f6c798d = L.popup({"maxWidth": "100"});
+
+        
+            
+                var html_860344ab9cf1706627129eee93b5c3ab = $(`<div id="html_860344ab9cf1706627129eee93b5c3ab" style="width: 100.0%; height: 100.0%;">บางปะกอก</div>`)[0];
+                popup_3596a8d81973d2f09bb296654f6c798d.setContent(html_860344ab9cf1706627129eee93b5c3ab);
+            
+        
+
+        circle_marker_6bc6c53703caa7394f78b3988663ce89.bindPopup(popup_3596a8d81973d2f09bb296654f6c798d)
+        ;
+
+        
+    
+    
+            var circle_marker_0a98ef798c414c7e529cf00b42f11055 = L.circleMarker(
+                [13.8008575, 100.5523823],
+                {"bubblingMouseEvents": true, "color": "#fa7202", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fa7202", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+        
+    
+        var popup_edb0acc41d5a3b662bacac922e19afb9 = L.popup({"maxWidth": "100"});
+
+        
+            
+                var html_d909d30b4feec8726d0aa2cb97039d89 = $(`<div id="html_d909d30b4feec8726d0aa2cb97039d89" style="width: 100.0%; height: 100.0%;">Bangsue Police Box</div>`)[0];
+                popup_edb0acc41d5a3b662bacac922e19afb9.setContent(html_d909d30b4feec8726d0aa2cb97039d89);
+            
+        
+
+        circle_marker_0a98ef798c414c7e529cf00b42f11055.bindPopup(popup_edb0acc41d5a3b662bacac922e19afb9)
+        ;
+
+        
+    
+    
+            var circle_marker_5ca4fe9411e563a0d5a4fb7e60b39750 = L.circleMarker(
+                [13.7459857, 100.5834657],
+                {"bubblingMouseEvents": true, "color": "#fa7202", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fa7202", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+        
+    
+        var popup_20aa6a53be93d569d3ad42619d6c6cd7 = L.popup({"maxWidth": "100"});
+
+        
+            
+                var html_af6b8ddfcb49ad32a55aa71a25dbd39f = $(`<div id="html_af6b8ddfcb49ad32a55aa71a25dbd39f" style="width: 100.0%; height: 100.0%;">Makasan Police Station</div>`)[0];
+                popup_20aa6a53be93d569d3ad42619d6c6cd7.setContent(html_af6b8ddfcb49ad32a55aa71a25dbd39f);
+            
+        
+
+        circle_marker_5ca4fe9411e563a0d5a4fb7e60b39750.bindPopup(popup_20aa6a53be93d569d3ad42619d6c6cd7)
+        ;
+
+        
+    
+    
+            var circle_marker_17a9d18abafc956ccc6db9a4f8c75aa0 = L.circleMarker(
+                [13.743812, 100.5437487],
+                {"bubblingMouseEvents": true, "color": "#fa7202", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fa7202", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+        
+    
+        var popup_747ded10c579c39a35ed1bb248192e8f = L.popup({"maxWidth": "100"});
+
+        
+            
+                var html_cd97a2cafcd471c119af7b12da262e8d = $(`<div id="html_cd97a2cafcd471c119af7b12da262e8d" style="width: 100.0%; height: 100.0%;">Traffic police box</div>`)[0];
+                popup_747ded10c579c39a35ed1bb248192e8f.setContent(html_cd97a2cafcd471c119af7b12da262e8d);
+            
+        
+
+        circle_marker_17a9d18abafc956ccc6db9a4f8c75aa0.bindPopup(popup_747ded10c579c39a35ed1bb248192e8f)
+        ;
+
+        
+    
+    
+            var circle_marker_febbadb7b09410078df570048c6b8671 = L.circleMarker(
+                [13.7492763, 100.5635823],
+                {"bubblingMouseEvents": true, "color": "#fa7202", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fa7202", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+        
+    
+        var popup_04bb97451168d009843fac0f78376a2c = L.popup({"maxWidth": "100"});
+
+        
+            
+                var html_191aafceb428c6f384223a39f5ca03ef = $(`<div id="html_191aafceb428c6f384223a39f5ca03ef" style="width: 100.0%; height: 100.0%;">Traffic Police box</div>`)[0];
+                popup_04bb97451168d009843fac0f78376a2c.setContent(html_191aafceb428c6f384223a39f5ca03ef);
+            
+        
+
+        circle_marker_febbadb7b09410078df570048c6b8671.bindPopup(popup_04bb97451168d009843fac0f78376a2c)
+        ;
+
+        
+    
+    
+            var circle_marker_a52ac64be176da0c9fe732f02d71d7d6 = L.circleMarker(
+                [13.7501639, 100.5545622],
+                {"bubblingMouseEvents": true, "color": "#fa7202", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fa7202", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+        
+    
+        var popup_3075f539266bae0312f29113dd466d8d = L.popup({"maxWidth": "100"});
+
+        
+            
+                var html_167ddba313a7e1ff2a4d687384cfc691 = $(`<div id="html_167ddba313a7e1ff2a4d687384cfc691" style="width: 100.0%; height: 100.0%;">Traffic Police box</div>`)[0];
+                popup_3075f539266bae0312f29113dd466d8d.setContent(html_167ddba313a7e1ff2a4d687384cfc691);
+            
+        
+
+        circle_marker_a52ac64be176da0c9fe732f02d71d7d6.bindPopup(popup_3075f539266bae0312f29113dd466d8d)
+        ;
+
+        
+    
+    
+            var circle_marker_d36a2a55ab23ad7f7e5206493c8982f4 = L.circleMarker(
+                [13.7456442, 100.516743],
+                {"bubblingMouseEvents": true, "color": "#fa7202", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fa7202", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+        
+    
+        var popup_73b04061be9c79277efc961fc7ddd43e = L.popup({"maxWidth": "100"});
+
+        
+            
+                var html_5636e2f0f5f4b349540abceb435c98b2 = $(`<div id="html_5636e2f0f5f4b349540abceb435c98b2" style="width: 100.0%; height: 100.0%;">สถานีตำรวจรถไฟนพวงศ์</div>`)[0];
+                popup_73b04061be9c79277efc961fc7ddd43e.setContent(html_5636e2f0f5f4b349540abceb435c98b2);
+            
+        
+
+        circle_marker_d36a2a55ab23ad7f7e5206493c8982f4.bindPopup(popup_73b04061be9c79277efc961fc7ddd43e)
+        ;
+
+        
+    
+    
+            var circle_marker_2c4337579d75b6fab3b1ff7d316ba8fc = L.circleMarker(
+                [13.6938258, 100.4503826],
+                {"bubblingMouseEvents": true, "color": "#fa7202", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fa7202", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+        
+    
+        var popup_c05dc0f1df80f2f97066a9670dcb69c0 = L.popup({"maxWidth": "100"});
+
+        
+            
+                var html_6d472c0daa7a96fdf0380e53dbe34b7b = $(`<div id="html_6d472c0daa7a96fdf0380e53dbe34b7b" style="width: 100.0%; height: 100.0%;">พ.ต.อ.วีร์พลใหญ่อรุณ</div>`)[0];
+                popup_c05dc0f1df80f2f97066a9670dcb69c0.setContent(html_6d472c0daa7a96fdf0380e53dbe34b7b);
+            
+        
+
+        circle_marker_2c4337579d75b6fab3b1ff7d316ba8fc.bindPopup(popup_c05dc0f1df80f2f97066a9670dcb69c0)
+        ;
+
+        
+    
+    
+            var circle_marker_5c1ff9119783570e3cf7fedb5e18ed48 = L.circleMarker(
+                [13.9348, 100.6070882],
+                {"bubblingMouseEvents": true, "color": "#fa7202", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fa7202", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+        
+    
+        var popup_9893c9fd3d6ff4942f6af288cba79833 = L.popup({"maxWidth": "100"});
+
+        
+            
+                var html_381629c6b4cc285e01675642f53d6f79 = $(`<div id="html_381629c6b4cc285e01675642f53d6f79" style="width: 100.0%; height: 100.0%;">สถานีตำรวจนครบาล ดอนเมือง</div>`)[0];
+                popup_9893c9fd3d6ff4942f6af288cba79833.setContent(html_381629c6b4cc285e01675642f53d6f79);
+            
+        
+
+        circle_marker_5c1ff9119783570e3cf7fedb5e18ed48.bindPopup(popup_9893c9fd3d6ff4942f6af288cba79833)
+        ;
+
+        
+    
+    
+            var circle_marker_e6b1ecd6ee3a43e1027473768c5f4b04 = L.circleMarker(
+                [13.8144924, 100.5314308],
+                {"bubblingMouseEvents": true, "color": "#fa7202", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fa7202", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+        
+    
+        var popup_e6c786791c0844b2e17537c128c90b5d = L.popup({"maxWidth": "100"});
+
+        
+            
+                var html_9c03bbf06bd5091e9ebf1dae71c9fab3 = $(`<div id="html_9c03bbf06bd5091e9ebf1dae71c9fab3" style="width: 100.0%; height: 100.0%;">สถานีตำรวจนครบาลเตาปูน</div>`)[0];
+                popup_e6c786791c0844b2e17537c128c90b5d.setContent(html_9c03bbf06bd5091e9ebf1dae71c9fab3);
+            
+        
+
+        circle_marker_e6b1ecd6ee3a43e1027473768c5f4b04.bindPopup(popup_e6c786791c0844b2e17537c128c90b5d)
+        ;
+
+        
+    
+    
+            var circle_marker_96249d6c31488c2a80997015dc496e37 = L.circleMarker(
+                [13.7600523, 100.4715376],
+                {"bubblingMouseEvents": true, "color": "#fa7202", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fa7202", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+        
+    
+        var popup_080bd078cead1cc5d4a8f62b3b3f9539 = L.popup({"maxWidth": "100"});
+
+        
+            
+                var html_8a2cbf0460eb78cfc75929172ac039ff = $(`<div id="html_8a2cbf0460eb78cfc75929172ac039ff" style="width: 100.0%; height: 100.0%;">สถานีตำรวจนครบาลบางกอกน้อย</div>`)[0];
+                popup_080bd078cead1cc5d4a8f62b3b3f9539.setContent(html_8a2cbf0460eb78cfc75929172ac039ff);
+            
+        
+
+        circle_marker_96249d6c31488c2a80997015dc496e37.bindPopup(popup_080bd078cead1cc5d4a8f62b3b3f9539)
+        ;
+
+        
+    
+    
+            var circle_marker_9f2c31d3468d33272834ea71ac0dec7f = L.circleMarker(
+                [13.6766384, 100.3453684],
+                {"bubblingMouseEvents": true, "color": "#fa7202", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fa7202", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+        
+    
+        var popup_42d55c2dc14863e03723da1b5363efc0 = L.popup({"maxWidth": "100"});
+
+        
+            
+                var html_91a862493f6f326611f5d6e1a349883c = $(`<div id="html_91a862493f6f326611f5d6e1a349883c" style="width: 100.0%; height: 100.0%;">สถานีตำรวจนครบาลหนองแขม</div>`)[0];
+                popup_42d55c2dc14863e03723da1b5363efc0.setContent(html_91a862493f6f326611f5d6e1a349883c);
+            
+        
+
+        circle_marker_9f2c31d3468d33272834ea71ac0dec7f.bindPopup(popup_42d55c2dc14863e03723da1b5363efc0)
+        ;
+
+        
+    
+    
+            var circle_marker_065d830a4610af0a8f059b3616308e5c = L.circleMarker(
+                [13.7230077, 100.5318268],
+                {"bubblingMouseEvents": true, "color": "#fa7202", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fa7202", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+        
+    
+        var popup_4b0483e992dbb96fb6b689fdc3eeb57a = L.popup({"maxWidth": "100"});
+
+        
+            
+                var html_f2393bb3b0cfeae71074cf91ef5eb19d = $(`<div id="html_f2393bb3b0cfeae71074cf91ef5eb19d" style="width: 100.0%; height: 100.0%;">กองบังคับการตำรวจนครบาล ๕</div>`)[0];
+                popup_4b0483e992dbb96fb6b689fdc3eeb57a.setContent(html_f2393bb3b0cfeae71074cf91ef5eb19d);
+            
+        
+
+        circle_marker_065d830a4610af0a8f059b3616308e5c.bindPopup(popup_4b0483e992dbb96fb6b689fdc3eeb57a)
+        ;
+
+        
+    
+    
+            var circle_marker_f3f2b387321bdf291dccfd503b3e7e99 = L.circleMarker(
+                [13.744217447081088, 100.53742105074568],
+                {"bubblingMouseEvents": true, "color": "#fa7202", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fa7202", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+        
+    
+        var popup_b65f7371ae7b004ed2878ff2a01b2a4a = L.popup({"maxWidth": "100"});
+
+        
+            
+                var html_a03afbc1204101c6537979234396f06e = $(`<div id="html_a03afbc1204101c6537979234396f06e" style="width: 100.0%; height: 100.0%;">สำนักงานตำรวจแห่งชาติ</div>`)[0];
+                popup_b65f7371ae7b004ed2878ff2a01b2a4a.setContent(html_a03afbc1204101c6537979234396f06e);
+            
+        
+
+        circle_marker_f3f2b387321bdf291dccfd503b3e7e99.bindPopup(popup_b65f7371ae7b004ed2878ff2a01b2a4a)
+        ;
+
+        
+    
+    
+            var circle_marker_f4b5ba2e6b473e44afa4824ef1a653f0 = L.circleMarker(
+                [13.731591971767166, 100.546155670927],
+                {"bubblingMouseEvents": true, "color": "#fa7202", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fa7202", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+        
+    
+        var popup_4d521b1010f8dcc191ec1400f181b458 = L.popup({"maxWidth": "100"});
+
+        
+            
+                var html_4f8a04a7fc48b21bc5aa8aa622d6b6b5 = $(`<div id="html_4f8a04a7fc48b21bc5aa8aa622d6b6b5" style="width: 100.0%; height: 100.0%;">สถานีตำรวจนครบาลลุมพินี</div>`)[0];
+                popup_4d521b1010f8dcc191ec1400f181b458.setContent(html_4f8a04a7fc48b21bc5aa8aa622d6b6b5);
+            
+        
+
+        circle_marker_f4b5ba2e6b473e44afa4824ef1a653f0.bindPopup(popup_4d521b1010f8dcc191ec1400f181b458)
+        ;
+
+        
+    
+    
+            var circle_marker_ed8123a8de91bd2520238c8320bf2afc = L.circleMarker(
+                [13.67380745, 100.45509599999998],
+                {"bubblingMouseEvents": true, "color": "#fa7202", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fa7202", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+        
+    
+        var popup_c0317e7a44a0df3c9c8f4411b82978cd = L.popup({"maxWidth": "100"});
+
+        
+            
+                var html_73f12b10b5ffbc62d6fe5f2169d406e2 = $(`<div id="html_73f12b10b5ffbc62d6fe5f2169d406e2" style="width: 100.0%; height: 100.0%;">สถานีตำรวจนครบาลบางมด</div>`)[0];
+                popup_c0317e7a44a0df3c9c8f4411b82978cd.setContent(html_73f12b10b5ffbc62d6fe5f2169d406e2);
+            
+        
+
+        circle_marker_ed8123a8de91bd2520238c8320bf2afc.bindPopup(popup_c0317e7a44a0df3c9c8f4411b82978cd)
+        ;
+
+        
+    
+    
+            var circle_marker_c8e702520b6fbc727b6b6282adbcae40 = L.circleMarker(
+                [13.746067412003285, 100.499297744709],
+                {"bubblingMouseEvents": true, "color": "#fa7202", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fa7202", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+        
+    
+        var popup_ed2a669c793852aa5c8270258d63a5c6 = L.popup({"maxWidth": "100"});
+
+        
+            
+                var html_8473602eddc35da6cf269748ed5273e4 = $(`<div id="html_8473602eddc35da6cf269748ed5273e4" style="width: 100.0%; height: 100.0%;">กองบังคับการตำรวจนครบาล 6</div>`)[0];
+                popup_ed2a669c793852aa5c8270258d63a5c6.setContent(html_8473602eddc35da6cf269748ed5273e4);
+            
+        
+
+        circle_marker_c8e702520b6fbc727b6b6282adbcae40.bindPopup(popup_ed2a669c793852aa5c8270258d63a5c6)
+        ;
+
+        
+    
+    
+            var circle_marker_3a972f1c05128dcd870d3d0dea1b68c0 = L.circleMarker(
+                [13.76771594680324, 100.50999026873006],
+                {"bubblingMouseEvents": true, "color": "#fa7202", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fa7202", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+        
+    
+        var popup_f8f1eea2792934baa1b7fee4cfafbdc2 = L.popup({"maxWidth": "100"});
+
+        
+            
+                var html_abd34f2c9c37fc64f13f530384c2446c = $(`<div id="html_abd34f2c9c37fc64f13f530384c2446c" style="width: 100.0%; height: 100.0%;">กองบัญชาการตำรวจนครบาล</div>`)[0];
+                popup_f8f1eea2792934baa1b7fee4cfafbdc2.setContent(html_abd34f2c9c37fc64f13f530384c2446c);
+            
+        
+
+        circle_marker_3a972f1c05128dcd870d3d0dea1b68c0.bindPopup(popup_f8f1eea2792934baa1b7fee4cfafbdc2)
+        ;
+
+        
+    
+    
+            var circle_marker_efc786271761c6ad6857837c5906dc4f = L.circleMarker(
+                [13.809510218425384, 100.84598554328764],
+                {"bubblingMouseEvents": true, "color": "#fa7202", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fa7202", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+        
+    
+        var popup_913ae96099a76acc37b71a0afd397e3f = L.popup({"maxWidth": "100"});
+
+        
+            
+                var html_5cf031a81c28eafc315b11f4667de380 = $(`<div id="html_5cf031a81c28eafc315b11f4667de380" style="width: 100.0%; height: 100.0%;">สถานีตำรวจนครบาลลำผักชี</div>`)[0];
+                popup_913ae96099a76acc37b71a0afd397e3f.setContent(html_5cf031a81c28eafc315b11f4667de380);
+            
+        
+
+        circle_marker_efc786271761c6ad6857837c5906dc4f.bindPopup(popup_913ae96099a76acc37b71a0afd397e3f)
+        ;
+
+        
+    
+    
+            var circle_marker_fa828829e8cabbf2024755c8663b7603 = L.circleMarker(
+                [13.868135808941592, 100.57120881734788],
+                {"bubblingMouseEvents": true, "color": "#fa7202", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fa7202", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+        
+    
+        var popup_e60849ab1f7186a73bf80bc8d48f3727 = L.popup({"maxWidth": "100"});
+
+        
+            
+                var html_43754bf1bb453e30bd7c9db8797da063 = $(`<div id="html_43754bf1bb453e30bd7c9db8797da063" style="width: 100.0%; height: 100.0%;">สถานีตำรวจนครบาลทุ่งสองห้อง</div>`)[0];
+                popup_e60849ab1f7186a73bf80bc8d48f3727.setContent(html_43754bf1bb453e30bd7c9db8797da063);
+            
+        
+
+        circle_marker_fa828829e8cabbf2024755c8663b7603.bindPopup(popup_e60849ab1f7186a73bf80bc8d48f3727)
+        ;
+
+        
+    
+    
+            var circle_marker_ed1df31c08dd749c8c46a1b66c36e924 = L.circleMarker(
+                [13.758441678138, 100.49513454556042],
+                {"bubblingMouseEvents": true, "color": "#fa7202", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fa7202", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+        
+    
+        var popup_41bca73f5f9a1c9f6edeba2978727afb = L.popup({"maxWidth": "100"});
+
+        
+            
+                var html_e812b01476eaeb8df3ab08554b9ee8af = $(`<div id="html_e812b01476eaeb8df3ab08554b9ee8af" style="width: 100.0%; height: 100.0%;">สถานีตำรวจนครบาลชนะสงคราม</div>`)[0];
+                popup_41bca73f5f9a1c9f6edeba2978727afb.setContent(html_e812b01476eaeb8df3ab08554b9ee8af);
+            
+        
+
+        circle_marker_ed1df31c08dd749c8c46a1b66c36e924.bindPopup(popup_41bca73f5f9a1c9f6edeba2978727afb)
+        ;
+
+        
+    
+    
+            var circle_marker_7468ba3a9603daff222aeca84eb56c20 = L.circleMarker(
+                [13.784050129319246, 100.6477312786812],
+                {"bubblingMouseEvents": true, "color": "#fa7202", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fa7202", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+        
+    
+        var popup_21edd6711fad2275ed79b9637eeab944 = L.popup({"maxWidth": "100"});
+
+        
+            
+                var html_e349707c9f69a64367620315e938e455 = $(`<div id="html_e349707c9f69a64367620315e938e455" style="width: 100.0%; height: 100.0%;">ตู้ควบคุมสัญญาณไฟจราจร</div>`)[0];
+                popup_21edd6711fad2275ed79b9637eeab944.setContent(html_e349707c9f69a64367620315e938e455);
+            
+        
+
+        circle_marker_7468ba3a9603daff222aeca84eb56c20.bindPopup(popup_21edd6711fad2275ed79b9637eeab944)
+        ;
+
+        
+    
+    
+            var circle_marker_f3bb59b09c37b879bd1378368f54cb21 = L.circleMarker(
+                [13.720388064960254, 100.51936565906912],
+                {"bubblingMouseEvents": true, "color": "#fa7202", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fa7202", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+        
+    
+        var popup_5b838d6ae2d20f8be7eb9aafbd54b86f = L.popup({"maxWidth": "100"});
+
+        
+            
+                var html_6128689277ceb0a6eb8855b59cb4eecc = $(`<div id="html_6128689277ceb0a6eb8855b59cb4eecc" style="width: 100.0%; height: 100.0%;">สถานีตำรวจนครบาลยานนาวา</div>`)[0];
+                popup_5b838d6ae2d20f8be7eb9aafbd54b86f.setContent(html_6128689277ceb0a6eb8855b59cb4eecc);
+            
+        
+
+        circle_marker_f3bb59b09c37b879bd1378368f54cb21.bindPopup(popup_5b838d6ae2d20f8be7eb9aafbd54b86f)
+        ;
+
+        
+    
+    
+            var circle_marker_53991104fc846ed9a1dd0c0ff47c83b9 = L.circleMarker(
+                [13.743937550000002, 100.51064550000002],
+                {"bubblingMouseEvents": true, "color": "#fa7202", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fa7202", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+        
+    
+        var popup_0e0ddf39a1d269c959df55b6b849c8d0 = L.popup({"maxWidth": "100"});
+
+        
+            
+                var html_87df883e1d4dfa7989a8e83595f5916a = $(`<div id="html_87df883e1d4dfa7989a8e83595f5916a" style="width: 100.0%; height: 100.0%;">สถานีตำรวจนครบาล พลับพลาไชย</div>`)[0];
+                popup_0e0ddf39a1d269c959df55b6b849c8d0.setContent(html_87df883e1d4dfa7989a8e83595f5916a);
+            
+        
+
+        circle_marker_53991104fc846ed9a1dd0c0ff47c83b9.bindPopup(popup_0e0ddf39a1d269c959df55b6b849c8d0)
+        ;
+
+        
+    
+    
+            var circle_marker_5587599676317f0978018eaf07adace3 = L.circleMarker(
+                [13.767795866666669, 100.64167290000002],
+                {"bubblingMouseEvents": true, "color": "#fa7202", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fa7202", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+        
+    
+        var popup_53f83b411caccca7994a5674b716632c = L.popup({"maxWidth": "100"});
+
+        
+            
+                var html_ed27884df4d62d604fedb7b26692da36 = $(`<div id="html_ed27884df4d62d604fedb7b26692da36" style="width: 100.0%; height: 100.0%;">ตู้ควบคุมสัญญาณไฟจราจร เดอะมอลล์ บางกะปิ</div>`)[0];
+                popup_53f83b411caccca7994a5674b716632c.setContent(html_ed27884df4d62d604fedb7b26692da36);
+            
+        
+
+        circle_marker_5587599676317f0978018eaf07adace3.bindPopup(popup_53f83b411caccca7994a5674b716632c)
+        ;
+
+        
+    
+    
+            var circle_marker_2a52c1481d8ca0589b49f9258a77bfeb = L.circleMarker(
+                [13.766521843161687, 100.64771089794434],
+                {"bubblingMouseEvents": true, "color": "#fa7202", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fa7202", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+        
+    
+        var popup_1cbff1ac37408235b86b0b0357970120 = L.popup({"maxWidth": "100"});
+
+        
+            
+                var html_99626fac06802a17b395b5e7924a5a66 = $(`<div id="html_99626fac06802a17b395b5e7924a5a66" style="width: 100.0%; height: 100.0%;">ตู้ควบคุมสัญญาณไฟจราจร สี่แยกบางกะปิ</div>`)[0];
+                popup_1cbff1ac37408235b86b0b0357970120.setContent(html_99626fac06802a17b395b5e7924a5a66);
+            
+        
+
+        circle_marker_2a52c1481d8ca0589b49f9258a77bfeb.bindPopup(popup_1cbff1ac37408235b86b0b0357970120)
+        ;
+
+        
+    
+    
+            var circle_marker_6e3113ef47ff9a9528e4df12bd124823 = L.circleMarker(
+                [13.77278872461774, 100.65443870230676],
+                {"bubblingMouseEvents": true, "color": "#fa7202", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fa7202", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+        
+    
+        var popup_6121c14bd2b78e37427921f3342fa420 = L.popup({"maxWidth": "100"});
+
+        
+            
+                var html_0420d9d41093981b37e468d5ba6cd48f = $(`<div id="html_0420d9d41093981b37e468d5ba6cd48f" style="width: 100.0%; height: 100.0%;">ตู้ควบคุมสัญญาณไฟจราจร แยกนิด้า</div>`)[0];
+                popup_6121c14bd2b78e37427921f3342fa420.setContent(html_0420d9d41093981b37e468d5ba6cd48f);
+            
+        
+
+        circle_marker_6e3113ef47ff9a9528e4df12bd124823.bindPopup(popup_6121c14bd2b78e37427921f3342fa420)
+        ;
+
+        
+    
+    
+            var circle_marker_58fcd6a8217af528f01757dfb08d453b = L.circleMarker(
+                [13.645727509672192, 100.38149556608197],
+                {"bubblingMouseEvents": true, "color": "#fa7202", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fa7202", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+        
+    
+        var popup_84eb0951e28c3e9ef036c6ef2475bdce = L.popup({"maxWidth": "100"});
+
+        
+            
+                var html_2b4309ff5e17ee06cae5171856dc4668 = $(`<div id="html_2b4309ff5e17ee06cae5171856dc4668" style="width: 100.0%; height: 100.0%;">สถานีตำรวจนครบาลบางบอน</div>`)[0];
+                popup_84eb0951e28c3e9ef036c6ef2475bdce.setContent(html_2b4309ff5e17ee06cae5171856dc4668);
+            
+        
+
+        circle_marker_58fcd6a8217af528f01757dfb08d453b.bindPopup(popup_84eb0951e28c3e9ef036c6ef2475bdce)
+        ;
+
+        
+    
+    
+            var circle_marker_7582c719016ce941aeb7e8d7291d9674 = L.circleMarker(
+                [13.721058199999998, 100.76391255],
+                {"bubblingMouseEvents": true, "color": "#fa7202", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fa7202", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+        
+    
+        var popup_72ae23104a5397a650c74acf2fc45fe1 = L.popup({"maxWidth": "100"});
+
+        
+            
+                var html_7c1ab9344b73c348040f94db350fa417 = $(`<div id="html_7c1ab9344b73c348040f94db350fa417" style="width: 100.0%; height: 100.0%;">Lat Krabang Police Station</div>`)[0];
+                popup_72ae23104a5397a650c74acf2fc45fe1.setContent(html_7c1ab9344b73c348040f94db350fa417);
+            
+        
+
+        circle_marker_7582c719016ce941aeb7e8d7291d9674.bindPopup(popup_72ae23104a5397a650c74acf2fc45fe1)
+        ;
+
+        
+    
+    
+            var circle_marker_d15e01dbc06fce2dd72afed267d91dea = L.circleMarker(
+                [13.735934187525784, 100.5836153692933],
+                {"bubblingMouseEvents": true, "color": "#fa7202", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fa7202", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+        
+    
+        var popup_6b00397d8f62153ff11dd7f0d0801525 = L.popup({"maxWidth": "100"});
+
+        
+            
+                var html_bdd3aba693aaccd36f9ba7660570d714 = $(`<div id="html_bdd3aba693aaccd36f9ba7660570d714" style="width: 100.0%; height: 100.0%;">Thong Lor Police Station</div>`)[0];
+                popup_6b00397d8f62153ff11dd7f0d0801525.setContent(html_bdd3aba693aaccd36f9ba7660570d714);
+            
+        
+
+        circle_marker_d15e01dbc06fce2dd72afed267d91dea.bindPopup(popup_6b00397d8f62153ff11dd7f0d0801525)
+        ;
+
+        
+    
+    
+            var circle_marker_ea894c36debad869e244098e571f0b7d = L.circleMarker(
+                [13.759964774534671, 100.6016678921212],
+                {"bubblingMouseEvents": true, "color": "#fa7202", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fa7202", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+        
+    
+        var popup_962a39ecf5fe95479b0c8ce08ea8c85c = L.popup({"maxWidth": "100"});
+
+        
+            
+                var html_d368b675f9da029e780aaa865174eac5 = $(`<div id="html_d368b675f9da029e780aaa865174eac5" style="width: 100.0%; height: 100.0%;">สถานีตำรวจนครบาลวังทองหลาง</div>`)[0];
+                popup_962a39ecf5fe95479b0c8ce08ea8c85c.setContent(html_d368b675f9da029e780aaa865174eac5);
+            
+        
+
+        circle_marker_ea894c36debad869e244098e571f0b7d.bindPopup(popup_962a39ecf5fe95479b0c8ce08ea8c85c)
+        ;
+
+        
+    
+    
+            var circle_marker_d36061dac4d9c09ccd8251dd392b01ac = L.circleMarker(
+                [13.7806705, 100.50966705],
+                {"bubblingMouseEvents": true, "color": "#fa7202", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fa7202", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+        
+    
+        var popup_606fa1d23c77bca7346f19a686ddd864 = L.popup({"maxWidth": "100"});
+
+        
+            
+                var html_b8e78d9b4998d6782b1f8d0d7398f52d = $(`<div id="html_b8e78d9b4998d6782b1f8d0d7398f52d" style="width: 100.0%; height: 100.0%;">สถานีตำรวจนครบาลสามเสน</div>`)[0];
+                popup_606fa1d23c77bca7346f19a686ddd864.setContent(html_b8e78d9b4998d6782b1f8d0d7398f52d);
+            
+        
+
+        circle_marker_d36061dac4d9c09ccd8251dd392b01ac.bindPopup(popup_606fa1d23c77bca7346f19a686ddd864)
+        ;
+
+        
+    
+    
+            var circle_marker_ba6bb8a18bdc31b22b6a7188ef6cd55e = L.circleMarker(
+                [13.7770475, 100.56986415],
+                {"bubblingMouseEvents": true, "color": "#fa7202", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fa7202", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+        
+    
+        var popup_a0cd76405be48471d050f867f8e80743 = L.popup({"maxWidth": "100"});
+
+        
+            
+                var html_fe3de568e2923e5a5d5f67789f180a1d = $(`<div id="html_fe3de568e2923e5a5d5f67789f180a1d" style="width: 100.0%; height: 100.0%;">Huai Khwang Metropolitan Police Station</div>`)[0];
+                popup_a0cd76405be48471d050f867f8e80743.setContent(html_fe3de568e2923e5a5d5f67789f180a1d);
+            
+        
+
+        circle_marker_ba6bb8a18bdc31b22b6a7188ef6cd55e.bindPopup(popup_a0cd76405be48471d050f867f8e80743)
+        ;
+
+        
+    
+    
+            var circle_marker_f1bf1897b5518da1d886129dd81f156c = L.circleMarker(
+                [13.78614068883253, 100.56696742577088],
+                {"bubblingMouseEvents": true, "color": "#fa7202", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fa7202", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+        
+    
+        var popup_51724810a4f172a7139194bdd2f3765c = L.popup({"maxWidth": "100"});
+
+        
+            
+                var html_5a1d4ff8182c4b6da67b4cfaa579ab60 = $(`<div id="html_5a1d4ff8182c4b6da67b4cfaa579ab60" style="width: 100.0%; height: 100.0%;">Sutthisan Check Point</div>`)[0];
+                popup_51724810a4f172a7139194bdd2f3765c.setContent(html_5a1d4ff8182c4b6da67b4cfaa579ab60);
+            
+        
+
+        circle_marker_f1bf1897b5518da1d886129dd81f156c.bindPopup(popup_51724810a4f172a7139194bdd2f3765c)
+        ;
+
+        
+    
+    
+            var circle_marker_1adb68092c74e4c3fe083e38aafeb06f = L.circleMarker(
+                [13.708652369704229, 100.59995174412074],
+                {"bubblingMouseEvents": true, "color": "#fa7202", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fa7202", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+        
+    
+        var popup_4174f1746ba45be2ad0d6945bb024314 = L.popup({"maxWidth": "100"});
+
+        
+            
+                var html_055a0f75c1e5a8d505abfc6ed8ec2972 = $(`<div id="html_055a0f75c1e5a8d505abfc6ed8ec2972" style="width: 100.0%; height: 100.0%;">สถานีตำรวจนครบาลพระโขนง</div>`)[0];
+                popup_4174f1746ba45be2ad0d6945bb024314.setContent(html_055a0f75c1e5a8d505abfc6ed8ec2972);
+            
+        
+
+        circle_marker_1adb68092c74e4c3fe083e38aafeb06f.bindPopup(popup_4174f1746ba45be2ad0d6945bb024314)
+        ;
+
+        
+    
+    
+            var circle_marker_e7e29e80c83a6b9c51d1187f608194f7 = L.circleMarker(
+                [13.79528905, 100.5933428],
+                {"bubblingMouseEvents": true, "color": "#fa7202", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fa7202", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+        
+    
+        var popup_fe8f3e0fb75893a402ee40fa6a08e669 = L.popup({"maxWidth": "100"});
+
+        
+            
+                var html_f1ae4d511914524141447c2a19d73197 = $(`<div id="html_f1ae4d511914524141447c2a19d73197" style="width: 100.0%; height: 100.0%;">สถานีตำรวจนครบาลโชคชัย</div>`)[0];
+                popup_fe8f3e0fb75893a402ee40fa6a08e669.setContent(html_f1ae4d511914524141447c2a19d73197);
+            
+        
+
+        circle_marker_e7e29e80c83a6b9c51d1187f608194f7.bindPopup(popup_fe8f3e0fb75893a402ee40fa6a08e669)
+        ;
+
+        
+    
+    
+            var circle_marker_97c1616636cde5db7387a0c5930ab99f = L.circleMarker(
+                [13.729924127630465, 100.52328583071724],
+                {"bubblingMouseEvents": true, "color": "#fa7202", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fa7202", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+        
+    
+        var popup_9016f70e48310fe1618183e271f8cc5e = L.popup({"maxWidth": "100"});
+
+        
+            
+                var html_becbb53a5d8539652555cbdcbce8e598 = $(`<div id="html_becbb53a5d8539652555cbdcbce8e598" style="width: 100.0%; height: 100.0%;">สถานีตำรวจนครบาล บางรัก</div>`)[0];
+                popup_9016f70e48310fe1618183e271f8cc5e.setContent(html_becbb53a5d8539652555cbdcbce8e598);
+            
+        
+
+        circle_marker_97c1616636cde5db7387a0c5930ab99f.bindPopup(popup_9016f70e48310fe1618183e271f8cc5e)
+        ;
+
+        
+    
+    
+            var circle_marker_d4436fa143ab73cab8e3638ac7c322d2 = L.circleMarker(
+                [13.868373834924675, 100.57669444723923],
+                {"bubblingMouseEvents": true, "color": "#fa7202", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#fa7202", "fillOpacity": 0.7, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 5, "stroke": true, "weight": 3}
+            ).addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+        
+    
+        var popup_1a36e20bcdb1979b2beb6444349e6e97 = L.popup({"maxWidth": "100"});
+
+        
+            
+                var html_88019ed30698e217a05a04981b623517 = $(`<div id="html_88019ed30698e217a05a04981b623517" style="width: 100.0%; height: 100.0%;">สโมสรตำรวจ</div>`)[0];
+                popup_1a36e20bcdb1979b2beb6444349e6e97.setContent(html_88019ed30698e217a05a04981b623517);
+            
+        
+
+        circle_marker_d4436fa143ab73cab8e3638ac7c322d2.bindPopup(popup_1a36e20bcdb1979b2beb6444349e6e97)
+        ;
+
+        
+    
+    
+            var layer_control_1612fe0e49a67d0ef2cd84aef9d1dfe0 = {
+                base_layers : {
+                    "stamentoner" : tile_layer_ec9a38d7f75595bd1a3590be3fefca86,
+                },
+                overlays :  {
+                },
+            };
+            L.control.layers(
+                layer_control_1612fe0e49a67d0ef2cd84aef9d1dfe0.base_layers,
+                layer_control_1612fe0e49a67d0ef2cd84aef9d1dfe0.overlays,
+                {"autoZIndex": true, "collapsed": true, "position": "topright"}
+            ).addTo(map_4f20cf6cedceffaa2a7d6a4bc157cf9c);
+        
+</script>
+</html>
