@@ -103,69 +103,83 @@ def style_function0(feature):
 
 def app():
     st.title("Restorative Bangkok City")
-    map_border = folium.Map(location=[13.72930616838845, 100.57522025302703], tiles="Cartodbdark_matter", zoom_start=11)
-    map_border2 = folium.Map(location=[13.72930616838845, 100.57522025302703], tiles="Cartodbdark_matter", zoom_start=11)
+    map_border = folium.Map(location=[13.72930616838845, 100.57522025302703], tiles="Cartodbdark_matter", zoom_start=10)
+    map_border_zoom10 = folium.Map(location=[13.72930616838845, 100.57522025302703], tiles="Cartodbdark_matter", zoom_start=10)
     m2 = folium.Map(location=[13.72930616838845, 100.57522025302703], tiles="Cartodbdark_matter", zoom_start=11) # "Stamen Toner"
     row1_col0, row1_col1, row1_col2 = st.columns([3, 3, 1])
     width = 950
     height = 600
 
     with row1_col0:
-                st.markdown('**Current City**')
-        # with st.expander("See source code"):
-                # with st.echo():
+                
+                st.markdown('**Population by District**')
                 folium.GeoJson(
                     districts,
-                    style_function=style_function0,
+                    style_function=style_function,
                     highlight_function=lambda x: {'weight': 3, 'color': '#3f999e', 'fillOpacity': 0.7 },
                     tooltip=folium.GeoJsonTooltip(fields=['dname', 'population'], labels=False, sticky=True)
-                ).add_to(map_border)
-
-                # =========== RESIDENTIAL ===========
-                for lat, lng, name in zip(res['lat'].astype(float), res['lng'].astype(float), res['name'] ):
-                    folium.CircleMarker(
-                        [lat, lng],
-                        radius=3,
-                        color= None, #'#fa7202',
-                        fill=True,
-                        popup=folium.Popup(name, max_width="100"),
-                        fill_color='#fa7202',
-                        fill_opacity=0.3,
-                        parse_html=False
-                    ).add_to(map_border2)
-
-                # # =========== HEALTHCARE ===========
-                # for lat, lng, name in zip(health['lat'].astype(float), health['lng'].astype(float), health['name']):
-                #     folium.Circle([lat, lng],
-                #                 radius=2500, # 5000 meters
-                #                 color= None, #'#f100f5',
-                #                 fill=True,
-                #                 popup=folium.Popup(name, max_width="100"),
-                #                 fill_color='#f100f5',
-                #                 fill_opacity=0.5
-                #                 ).add_to(map_border)
-                st_folium(map_border2, width=-1400, height= 800, returned_objects=[])
+                ).add_to(map_border_zoom10)
+                st_folium(map_border_zoom10, width=-1400, height= 800, returned_objects=[])
 
 
     with row1_col2:
-        
 
-        backend = st.selectbox(
-            "Select a livability type", ["Population", "Environmental score", "Happiness score"], index=0
-        )
+        # backend = st.radio(
+        #     "Select a livability type",
+        #     key="visibility",   
+        #     # options=["visible", "hidden", "collapsed"],
+        #     options=["Green Place", "Active Place", "Safe Place"], index=0
+        # )
+        green_check = st.checkbox("Hide Green Place", value = False, key="disabled1")
+        # if green_check:
+        green = st.multiselect(
+            'Select Green Place Data',
+            ["Metro Train Station", "Fire Station"],
+            ['Metro Train Station'],
+            label_visibility= "visible", disabled= st.session_state.disabled1)
+            
+        active_check = st.checkbox("Hide Active Place", value = True, key="disabled2")
+        # if active_check:
+        active = st.multiselect(
+            'Select Active Place Data',
+            ["Market", "Department Store"],
+            ['Market'],
+            label_visibility= "visible",disabled=st.session_state.disabled2)
+            
+        safe_check = st.checkbox("Hide Safe Place", value = True, key="disabled3")
+        # if safe_check:
+        safe = st.multiselect(
+            'Select Safe Place Data',
+            ["Healthcare", "Residential",'Fire Station'],
+            ['Healthcare'],
+            label_visibility= "visible", disabled=st.session_state.disabled3)
+        if green_check :
+            green = []
+        if active_check :
+            active = []
+        if safe_check :
+            safe = []
+        backend2 = green + active + safe
+        st.markdown(backend2)
+        # if "visibility" in st.session_state:
+        #     st.session_state.visibility = "visible"
+        #     st.session_state.disabled = True
+
+        # backend = st.selectbox(
+        #     "Select a livability type", ["Green Place", "Active Place", "Safe Place"], index=0
+        # )
+
         
         # backend2 = st.selectbox(
         #     "Select dataset", ["Metro Train Station", "Park", "Healthcare", "Market","Department Store", "Fire Station", "Police Station" , "Community"], index=0
         # )
-        backend2 = st.multiselect(
-            'Select dataset',
-            ["Metro Train Station", "Healthcare", "Market","Department Store", "Fire Station", "Police Station" , "Residential"],
-            ['Metro Train Station'])
+        # backend2 = st.multiselect(
+        #     'Select dataset',
+        #     ["Metro Train Station", "Healthcare", "Market","Department Store", "Fire Station", "Police Station" , "Residential"],
+        #     ['Metro Train Station'])
 
-        st.markdown(
-             "**" + backend+ "**"  +  " and"  + " " + "**" + backend2[0]+ "**" 
-            )
-        check = st.checkbox("Select by District", value = False, key="disabled")
+        
+        check = st.checkbox("Select by District", value = False, key="disabled0")
         
         if check:
             option = st.selectbox(  
@@ -240,22 +254,22 @@ def app():
     # print(backend + backend2)
     with row1_col1:
                 
-            st.markdown('**Recommended City**')
-
-            if len(backend2) == 1:
+            st.markdown('**Bangkok Data**')
+            # backend2 = green + active + safe
+            if len(backend2) < 1:
                 # with st.expander("See source code"):
                 # with st.echo():
                 # map_border = folium.Map(location=[13.72930616838845, 100.57522025302703], tiles="Cartodbdark_matter", zoom_start=11)
                 # Add the district boundaries to the map
                 folium.GeoJson(
                     districts,
-                    style_function=style_function,
+                    style_function=style_function0,
                     highlight_function=lambda x: {'weight': 3, 'color': '#3f999e', 'fillOpacity': 0.7 },
                     tooltip=folium.GeoJsonTooltip(fields=['dname', 'population'], labels=False, sticky=True)
                 ).add_to(map_border)
                 st_folium(map_border, width=-1400, height= 800, returned_objects=[])
 
-            elif len(backend2) > 1:
+            elif len(backend2) >= 1:
                 def plot_(data_map, num):
                     
                     color_list = ['#fa7202','#40eb34','#0ecced','#0ecced','#190eed','#ed0e0e','#ed0e0e']
@@ -295,40 +309,40 @@ def app():
                     elif i == "Community":
                         plot_(res,num)
                 st_folium(map_border, width=-1400, height= 800, returned_objects=[])
-            else:
-                # with st.expander("See source code"):
-                # with st.echo():
-                folium.GeoJson(
-                    districts,
-                    style_function=style_function0,
-                    highlight_function=lambda x: {'weight': 3, 'color': '#3f999e', 'fillOpacity': 0.7 },
-                    tooltip=folium.GeoJsonTooltip(fields=['dname', 'population'], labels=False, sticky=True)
-                ).add_to(map_border)
+            # else:
+            #     # with st.expander("See source code"):
+            #     # with st.echo():
+            #     folium.GeoJson(
+            #         districts,
+            #         style_function=style_function0,
+            #         highlight_function=lambda x: {'weight': 3, 'color': '#3f999e', 'fillOpacity': 0.7 },
+            #         tooltip=folium.GeoJsonTooltip(fields=['dname', 'population'], labels=False, sticky=True)
+            #     ).add_to(map_border)
 
-                # =========== RESIDENTIAL ===========
-                for lat, lng, name in zip(res['lat'].astype(float), res['lng'].astype(float), res['name'] ):
-                    folium.CircleMarker(
-                        [lat, lng],
-                        radius=3,
-                        color= None, #'#fa7202',
-                        fill=True,
-                        popup=folium.Popup(name, max_width="100"),
-                        fill_color='#fa7202',
-                        fill_opacity=0.3,
-                        parse_html=False
-                    ).add_to(map_border)
+            #     # =========== RESIDENTIAL ===========
+            #     for lat, lng, name in zip(res['lat'].astype(float), res['lng'].astype(float), res['name'] ):
+            #         folium.CircleMarker(
+            #             [lat, lng],
+            #             radius=3,
+            #             color= None, #'#fa7202',
+            #             fill=True,
+            #             popup=folium.Popup(name, max_width="100"),
+            #             fill_color='#fa7202',
+            #             fill_opacity=0.3,
+            #             parse_html=False
+            #         ).add_to(map_border)
 
-                # =========== HEALTHCARE ===========
-                for lat, lng, name in zip(health['lat'].astype(float), health['lng'].astype(float), health['name']):
-                    folium.Circle([lat, lng],
-                                radius=2500, # 5000 meters
-                                color= None, #'#f100f5',
-                                fill=True,
-                                popup=folium.Popup(name, max_width="100"),
-                                fill_color='#f100f5',
-                                fill_opacity=0.5
-                                ).add_to(map_border)
-                st_folium(map_border, width=-1400, height= 800, returned_objects=[])
+            #     # =========== HEALTHCARE ===========
+            #     for lat, lng, name in zip(health['lat'].astype(float), health['lng'].astype(float), health['name']):
+            #         folium.Circle([lat, lng],
+            #                     radius=2500, # 5000 meters
+            #                     color= None, #'#f100f5',
+            #                     fill=True,
+            #                     popup=folium.Popup(name, max_width="100"),
+            #                     fill_color='#f100f5',
+            #                     fill_opacity=0.5
+            #                     ).add_to(map_border)
+                # st_folium(map_border, width=-1400, height= 800, returned_objects=[])
 
 
 
