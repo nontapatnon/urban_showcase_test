@@ -12,15 +12,15 @@ import csv
 
 st.set_page_config(layout="wide")
 
-st.sidebar.info(
+st.sidebar.info(':)'
     # """
     # - Web App URL: <https://streamlit.geemap.org>
     # - GitHub repository: <https://github.com/giswqs/streamlit-geospatial>
     # """
-    """
-    - ARCHITECTS 49: 
-    <https://a49.co.th>
-    """
+    # """
+    # - ARCHITECTS 49: 
+    # <https://a49.co.th>
+    # """
 )
 # - Integrated Research and Innovations: <https://github.com/giswqs/streamlit-geospatial>
 
