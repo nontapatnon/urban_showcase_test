@@ -65,6 +65,10 @@ fire.rename(columns={fire.columns[0]: "name"},inplace = True)
 metro = pd.read_csv('data//data_showcase//mrt.csv')
 metro.rename(columns={metro.columns[0]: "name"},inplace = True)
 
+# =========== PARK ===========
+park = pd.read_csv('data//data_showcase//parkmain_new_location.csv')
+park.rename(columns={park.columns[0]: "name"},inplace = True)
+# park = park[['name','lat','lng']]
 # =========== POLICESTATION ===========
 police = pd.read_csv('data//data_showcase//police_station.csv')
 police.rename(columns={police.columns[0]: "name"},inplace = True)
@@ -97,7 +101,7 @@ def style_function0(feature):
     return {
         # 'fillColor': colormap(population),
         'color': '#00f2ff',
-        'weight': 0.1,
+        'weight': 0.5,
         'fillOpacity': 0
     }
 
@@ -134,8 +138,8 @@ def app():
         # if green_check:
         green = st.multiselect(
             'Select Green Place Data',
-            ["Metro Train Station", "Fire Station"],
-            ['Metro Train Station'],
+            ["Park"],
+            ['Park'],
             label_visibility= "visible", disabled= st.session_state.disabled1)
             
         active_check = st.checkbox("Hide Active Place", value = True, key="disabled2")
@@ -272,7 +276,7 @@ def app():
             elif len(backend2) >= 1:
                 def plot_(data_map, num):
                     
-                    color_list = ['#fa7202','#40eb34','#0ecced','#0ecced','#190eed','#ed0e0e','#ed0e0e']
+                    color_list = ['#40eb34','#fa7202','#0ecced','#0ecced','#190eed','#ed0e0e','#ed0e0e']
                     for lat, lng, name in zip(data_map['lat'].astype(float), data_map['lng'].astype(float), data_map['name'] ):
                         folium.CircleMarker(
                             [lat, lng],
@@ -296,6 +300,8 @@ def app():
                     # data_map = metro
                     if i == "Metro Train Station":
                         plot_(metro,num)
+                    elif i == "Park":
+                        plot_(park,num)  
                     elif i == "Healthcare":
                         plot_(health,num)
                     elif i == "Market":
