@@ -67,6 +67,7 @@ metro.rename(columns={metro.columns[0]: "name"},inplace = True)
 
 # =========== PARK ===========
 park = pd.read_csv('data//data_showcase//parkmain_new_location.csv')
+# park = pd.read_csv('data//data_showcase//park.csv')
 park.rename(columns={park.columns[0]: "name"},inplace = True)
 # park = park[['name','lat','lng']]
 # =========== POLICESTATION ===========
